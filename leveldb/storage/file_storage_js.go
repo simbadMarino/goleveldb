@@ -443,7 +443,7 @@ func browserFSSyncDir(dirname string) error {
 // isBrowserFSSupported returns true if BrowserFS is supported. It does this by
 // checking for the global "browserFS" object.
 func isBrowserFSSupported() bool {
-	return js.Global().Get("browserFS") != js.Null() && js.Global().Get("browserFS") != js.Undefined()
+	return !js.Global().Get("browserFS").Equal(js.Null()) && !js.Global().Get("browserFS").Equal(js.Undefined())
 }
 
 // convertJSError converts an error returned by the BrowserFS API into a Go
