@@ -451,11 +451,11 @@ func isBrowserFSSupported() bool {
 // returned (e.g. ENOENT when a file doesn't exist) and programs often change
 // their behavior depending on the type of error.
 func convertJSError(err js.Error) error {
-	if err.Value == js.Undefined() || err.Value == js.Null() {
+	if err.Value.Equal(js.Undefined()) || err.Value.Equal(js.Null()) {
 		return nil
 	}
 	// TODO(albrow): Convert to os.PathError when possible/appropriate.
-	if code := err.Get("code"); code != js.Undefined() && code != js.Null() {
+	if code := err.Get("code"); !code.Equal(js.Undefined()) && !code.Equal(js.Null()) {
 		switch code.String() {
 		case "ENOENT":
 			return os.ErrNotExist
@@ -649,7 +649,7 @@ func makeAutoReleaseCallback() (callback js.Func, resultsChan chan js.Value, err
 				return
 			}
 			err := args[0]
-			if err != js.Undefined() && err != js.Null() {
+			if !err.Equal(js.Undefined()) && !err.Equal(js.Null()) {
 				errChan <- js.Error{Value: err}
 				return
 			}
