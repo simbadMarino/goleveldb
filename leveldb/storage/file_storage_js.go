@@ -443,7 +443,7 @@ func browserFSSyncDir(dirname string) error {
 // isBrowserFSSupported returns true if BrowserFS is supported. It does this by
 // checking for the global "browserFS" object.
 func isBrowserFSSupported() bool {
-	return !js.Global().Get("browserFS").Equal(js.Null()) && !js.Global().Get("browserFS").Equal(js.Undefined())
+	return !js.Global().Get("browserFS").IsNull() && !js.Global().Get("browserFS").IsUndefined()
 }
 
 // convertJSError converts an error returned by the BrowserFS API into a Go
@@ -451,11 +451,11 @@ func isBrowserFSSupported() bool {
 // returned (e.g. ENOENT when a file doesn't exist) and programs often change
 // their behavior depending on the type of error.
 func convertJSError(err js.Error) error {
-	if err.Value.Equal(js.Undefined()) || err.Value.Equal(js.Null()) {
+	if err.Value.IsUndefined() || err.Value.IsNull() {
 		return nil
 	}
 	// TODO(albrow): Convert to os.PathError when possible/appropriate.
-	if code := err.Get("code"); !code.Equal(js.Undefined()) && !code.Equal(js.Null()) {
+	if code := err.Get("code"); !code.IsUndefined() && !code.IsNull() {
 		switch code.String() {
 		case "ENOENT":
 			return os.ErrNotExist
@@ -649,7 +649,7 @@ func makeAutoReleaseCallback() (callback js.Func, resultsChan chan js.Value, err
 				return
 			}
 			err := args[0]
-			if !err.Equal(js.Undefined()) && !err.Equal(js.Null()) {
+			if !err.IsUndefined() && !err.IsNull() {
 				errChan <- js.Error{Value: err}
 				return
 			}
