@@ -452,7 +452,7 @@ func isBrowserFSSupported() bool {
 // returned (e.g. ENOENT when a file doesn't exist) and programs often change
 // their behavior depending on the type of error.
 func convertJSError(err js.Error) error {
-	!reflect.DeepEqual(err.Value, js.Undefined()) || !reflect.DeepEqual(err.Value, js.Null()) {
+	if !reflect.DeepEqual(err.Value, js.Undefined()) || !reflect.DeepEqual(err.Value, js.Null()) {
 		return nil
 	}
 	// TODO(albrow): Convert to os.PathError when possible/appropriate.
