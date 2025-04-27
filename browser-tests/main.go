@@ -1,10 +1,11 @@
+//go:build js
 // +build js
 
 package main
 
 import (
-	"github.com/0xProject/qunit"
 	"github.com/google/uuid"
+	"github.com/rusco/qunit"
 	"github.com/syndtr/goleveldb/leveldb"
 )
 
